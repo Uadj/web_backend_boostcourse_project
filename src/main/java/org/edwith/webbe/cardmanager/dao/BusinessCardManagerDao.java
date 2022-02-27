@@ -9,7 +9,7 @@ import java.util.List;
 public class BusinessCardManagerDao {
     private static String dburl = "jdbc:mysql://localhost:3306/sample?useUnicode=true&serverTimezone=Asia/Seoul";
     private static String dbUser = "root";
-    private static String dbpasswd = "Kamilaezail21!";
+    private static String dbpasswd = "1234";
 
     public List<BusinessCard> searchBusinessCard(String keyword){
             List<BusinessCard> list = new ArrayList<>();
@@ -27,9 +27,9 @@ public class BusinessCardManagerDao {
             try (ResultSet rs = ps.executeQuery()) {
 
                 while (rs.next()) {
-                    String name = rs.getString("name");
-                    String phone = rs.getString("phone");
-                    String companyName =  rs.getString("companyname");
+                    String name = rs.getString(1);
+                    String phone = rs.getString(2);
+                    String companyName =  rs.getString(3);
                     BusinessCard businessCard = new BusinessCard(name, phone, companyName);
                     list.add(businessCard); // list에 반복할때마다 businessCard 생성하여 list에 추가한다.
                 }
@@ -44,8 +44,6 @@ public class BusinessCardManagerDao {
 
 
     public BusinessCard addBusinessCard(BusinessCard businessCard){
-        int insertCount = 0;
-
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
         } catch (ClassNotFoundException e) {
@@ -62,13 +60,10 @@ public class BusinessCardManagerDao {
             java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
             ps.setDate(4, sqlDate);
 
-            insertCount = ps.executeUpdate();
-
         } catch (Exception ex) {
             ex.printStackTrace();
         }
         return businessCard;
     }
-	// 구현하세요.
 
 }
